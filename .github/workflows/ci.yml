@@ -9,7 +9,7 @@ on:
       - main
 
 jobs:
-  test_and_deploy:
+  test:
     runs-on: ubuntu-latest
 
     steps:
@@ -31,7 +31,22 @@ jobs:
       - name: Run tests
         run: npm test
 
-      # Крок 5: Деплой (симуляція)
+  deploy:
+    runs-on: ubuntu-latest
+
+    needs: test
+
+    steps:
+      # Крок 1: Checkout репозиторія
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Крок 2: Встановлення Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      # Крок 3: Деплой (симуляція)
       - name: Deploy simulation
         run: echo "Deployed"
-        if: success()
